@@ -94,6 +94,7 @@ json
 ```
 In‑memory БД (H2) vs. ConcurrentHashMap (Данный проект- Spring не знает, как откатить изменения в Map)
 ```
+
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {
   'primaryColor':'#e8f5e9',

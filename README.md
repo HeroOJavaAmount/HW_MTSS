@@ -94,6 +94,16 @@ json
 In‑memory БД (H2) vs. ConcurrentHashMap (Данный проект- Spring не знает, как откатить изменения в Map)
 ```
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {
+  'primaryColor':'#e8f5e9',
+  'primaryTextColor':'#AF111C',
+  'primaryBorderColor':'#2e7d32',
+  'lineColor':'#2e7d32',
+  'fontSize':'70px',
+  'fontFamily':'Arial, sans-serif'
+}}}%%
+
+
 flowchart LR
     A[Пользователь] --> B[Демо-фронтенд<br/>React]
     B --> C[TransferController<br/>REST API]
@@ -103,7 +113,7 @@ flowchart LR
     D --> G[LoggingServiceImpl<br/>Запись логов]
     F --> H[ConcurrentHashMap<br/>Балансы и операции]
     G --> I[transfer.log]
-    H --> J[(JdbC)]
+    H --> J[(XXXX-JdbC-XXXX)]
 
     style J fill:#f9f,stroke:#333,stroke-dasharray: 5 5
 ```

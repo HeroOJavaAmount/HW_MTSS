@@ -1,0 +1,7 @@
+{"timestamp":"2026-04-19T21:01:16.225375800Z","senderAccountId":1,"receiverAccountId":2,"amount":"500.00","commission":"25.00","status":"SUCCESS","operation_id":"443d8283-55d5-4865-a398-d59112ecbd58"}
+{"timestamp":"2026-04-19T21:10:46.641852Z","senderAccountId":1,"receiverAccountId":2,"amount":"500.00","commission":"25.00","status":"SUCCESS","operation_id":"f963e499-ff57-423f-ac44-732c1fd9a7c6"}
+{"timestamp":"2026-04-19T21:26:43.940495300Z","senderAccountId":1,"receiverAccountId":2,"amount":"500.00","commission":"25.00","status":"SUCCESS","operation_id":"62ed8c80-32d0-4988-a039-e7e23e320757"}
+{"timestamp":"2026-04-19T21:34:08.324210100Z","senderAccountId":1,"receiverAccountId":2,"amount":"500.00","commission":"25.00","status":"SUCCESS","operation_id":"5ac430ac-8f18-4c1b-bc6c-dd7f3480042a"}
+{"timestamp":"2026-04-20T20:16:24.777580800Z","cardFromNumber":"1234567812345678","cardToNumber":"8765432187654321","amount":"10000.00","commission":"120.00","status":"SUCCESS","operation_id":"daea367f-3d6d-4b35-9e9c-7949debc65d7"}
+{"timestamp":"2026-04-20T20:48:00.230397400Z","cardFromNumber":"1234567812345678","cardToNumber":"8765432187654321","amount":"13300.00","commission":"153.00","status":"SUCCESS","operation_id":"f9ed4f78-7098-4750-be46-87cb23a3fd95"}
+{"timestamp":"2026-04-20T20:50:31.328947200Z","cardFromNumber":"1234567812345678","cardToNumber":"8765432187654321","amount":"1000000.00","commission":"10020.00","status":"SUCCESS","operation_id":"f402413a-5d6b-40de-9239-b99cd85fb53c"}

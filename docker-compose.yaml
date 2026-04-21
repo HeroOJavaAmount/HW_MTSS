@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5500:5500"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - transfer.log.file=/logs/transfers.jsonl
+    volumes:
+      - ./logs:/logs

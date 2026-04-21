@@ -1,0 +1,21 @@
+# Compiled files
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Logs (если папку logs не хотите коммитить – раскомментируйте строку ниже)
+# logs/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven wrapper (JAR можно не хранить, но wrapper.properties и mvnw нужны)
+.mvn/wrapper/maven-wrapper.jar

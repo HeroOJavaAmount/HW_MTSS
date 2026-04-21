@@ -103,6 +103,9 @@ flowchart LR
     D --> G[LoggingServiceImpl<br/>Запись логов]
     F --> H[ConcurrentHashMap<br/>Балансы и операции]
     G --> I[transfer.log]
+    H --> J[(JdbC)]
+
+    style J fill:#f9f,stroke:#333,stroke-dasharray: 5 5
 ```
 
 

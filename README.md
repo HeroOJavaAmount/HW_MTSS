@@ -83,3 +83,21 @@ json
 
 ### 3.⚖️ Критерии выбора. Смешенный подход к расположению констант,часть констант вынесена в application.yaml, а часть в классе ConstantContainer.
 ### 4. Покрытие тестами.
+
+In‑memory БД (H2) vs. ConcurrentHashMap
+
+```mermaid
+flowchart LR
+    A[Пользователь] --> B[Демо-фронтенд<br/>React]
+    B --> C[TransferController<br/>REST API]
+    C --> D[TransferServiceImpl<br/>Бизнес-логика]
+    D --> E[MixedCommission<br/>Расчёт комиссии 1%]
+    D --> F[InMemoryTransferRepository<br/>Хранилище в памяти]
+    D --> G[LoggingServiceImpl<br/>Запись логов]
+    F --> H[ConcurrentHashMap<br/>Балансы и операции]
+    G --> I[transfer.log]
+```
+
+
+
+

@@ -113,7 +113,7 @@ flowchart LR
     D --> G[LoggingServiceImpl<br/>Запись логов]
     F --> H[ConcurrentHashMap<br/>Балансы и операции]
     G --> I[transfer.log]
-    H --> J[(XXXX-JDBC (Java Database Connectivity)-XXXX)]
+    H --> J[(XXXX-JDBC Java Database Connectivity-XXXX)]
 
     style J fill:#f9f,stroke:#333,stroke-dasharray: 5 5
 ```

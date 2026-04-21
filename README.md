@@ -75,8 +75,6 @@ json
 ```
 ## 2. 🛠 Технологический стэк.
 
-## 🛠 Технологический стек
-
 ![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?logo=springboot&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)

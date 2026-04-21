@@ -11,9 +11,12 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
 ![Testcontainers](https://img.shields.io/badge/Testcontainers-1.20.4-green?logo=testcontainers&logoColor=white)
 
-Сервис перевода денег с карты на карту. Реализован на Spring Boot с упрощенным in-memory типом данных.  
+### Сервис перевода денег с карты на карту
+
+Реализован на Spring Boot с упрощенным in-memory типом данных.  
 Реализует двухэтапный перевод с подтверждением по коду и логирование всех операций.
-Поддерживает расчет сложной комиссии на основе расширяемой архитектуры (абстрактный класс `Commission`, enum `CommissionType`).
+
+**Поддерживает расчет сложной комиссии** на основе расширяемой архитектуры (абстрактный класс `Commission`, enum `CommissionType`).  
 В текущей реализации комиссия зафиксирована на уровне **1%** для соответствия демонстрационному фронтенду.
 ---
 > Примечания

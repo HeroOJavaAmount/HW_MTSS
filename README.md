@@ -6,10 +6,10 @@
 
 Упрощенная реализация сервиса перевода денежных сумм между банковскими картами.
 
-<span style="background-color: #007bff; color: white; padding: 3px 8px; border-radius: 12px; font-size: 14px;">Java 17</span>
-<span style="background-color: #6f42c1; color: white; padding: 3px 8px; border-radius: 12px; font-size: 14px;">Spring Boot 3.3.5</span>
-<span style="background-color: #2496ed; color: white; padding: 3px 8px; border-radius: 12px; font-size: 14px;">Docker</span>
-<span style="background-color: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 14px;">Testcontainers</span>
+![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?logo=springboot&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
+![Testcontainers](https://img.shields.io/badge/Testcontainers-1.20.4-green?logo=testcontainers&logoColor=white)
 
 Сервис перевода денег с карты на карту. Реализован на Spring Boot с упрощенным in-memory типом данных.  
 Реализует двухэтапный перевод с подтверждением по коду и логирование всех операций.

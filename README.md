@@ -80,8 +80,13 @@ json
 ![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-3.9-red?logo=apachemaven&logoColor=white)
 ![JUnit](https://img.shields.io/badge/JUnit-5.10-green?logo=junit5&logoColor=white)
-### 3.⚖️ Критерии выбора. Смешенный подход к расположению констант,часть констант вынесена в application.yaml, а часть в классе ConstantContainer.
-### 4. Покрытие тестами.
+## 3. ⚖️ Управление конфигурацией
+
+Применён смешанный подход: настройки, зависящие от окружения (порт, лимиты, путь к логам), вынесены в `application.yaml`, а статические константы, определяющие API (коды ошибок, валюта, проверочный код), хранятся в классе `ConstantContainer`.
+
+## 4. 🧪 Покрытие тестами
+
+Проект содержит модульные тесты (JUnit 5 + Mockito) для всех ключевых компонентов, а также интеграционные тесты с использованием Testcontainers.
 ```
 In‑memory БД (H2) vs. ConcurrentHashMap (Данный проект- Spring не знает, как откатить изменения в Map)
 ```

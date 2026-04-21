@@ -83,9 +83,9 @@ json
 
 ### 3.⚖️ Критерии выбора. Смешенный подход к расположению констант,часть констант вынесена в application.yaml, а часть в классе ConstantContainer.
 ### 4. Покрытие тестами.
-
+```
 In‑memory БД (H2) vs. ConcurrentHashMap (Данный проект- Spring не знает, как откатить изменения в Map)
-
+```
 ```mermaid
 flowchart LR
     A[Пользователь] --> B[Демо-фронтенд<br/>React]

@@ -75,12 +75,13 @@ json
 ```
 ## 2. 🛠 Технологический стэк.
 
-<span style="background-color: #007bff; color: white; padding: 3px 8px; border-radius: 12px;">Java 17</span>
-<span style="background-color: #6f42c1; color: white; padding: 3px 8px; border-radius: 12px;">Spring Boot 3.3.5</span>
-<span style="background-color: #2496ed; color: white; padding: 3px 8px; border-radius: 12px;">Docker</span>
-<span style="background-color: #28a745; color: white; padding: 3px 8px; border-radius: 12px;">Maven</span>
-<span style="background-color: #dc3545; color: white; padding: 3px 8px; border-radius: 12px;">JUnit 5</span>
+## 🛠 Технологический стек
 
+![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?logo=springboot&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.9-red?logo=apachemaven&logoColor=white)
+![JUnit](https://img.shields.io/badge/JUnit-5.10-green?logo=junit5&logoColor=white)
 ### 3.⚖️ Критерии выбора. Смешенный подход к расположению констант,часть констант вынесена в application.yaml, а часть в классе ConstantContainer.
 ### 4. Покрытие тестами.
 ```

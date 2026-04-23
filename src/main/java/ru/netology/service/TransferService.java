@@ -1,6 +1,6 @@
 package ru.netology.service;
 
-import ru.netology.model.TransferRequest;
+import ru.netology.dto.TransferRequest;
 
 public interface TransferService {
     String initiateTransfer(TransferRequest request);

@@ -3,11 +3,12 @@ package ru.netology.service;
 import org.springframework.stereotype.Service;
 import ru.netology.exception.InvalidInputException;
 import ru.netology.exception.TransferException;
-import ru.netology.model.TransferRequest;
+import ru.netology.dto.TransferRequest;
 import ru.netology.repository.InMemoryTransferRepository;
 import ru.netology.service.commission.MixedCommission;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static ru.netology.config.ConstantContainer.*;
 
@@ -37,62 +38,73 @@ public class TransferServiceImpl implements TransferService {
             throw new InvalidInputException("Receiver card not found-Карта получателя нe найдена", ERROR_INVALID_CARD_DATA);
         }
 
-        BigDecimal amount = BigDecimal.valueOf(request.amount().value(), 2);
-        BigDecimal commissionAmount = commission.calculate(amount);
-        BigDecimal totalDebit = amount.add(commissionAmount);
+        // Сумма в копейках: amountKop в рублях amountRub
+        BigDecimal amountKop = BigDecimal.valueOf(request.amount().value());
 
-        if (!repository.hasSufficientFunds(request.cardFromNumber(), totalDebit)) {
-            throw new TransferException("Insufficient funds-Нет достаточно денег", ERROR_TRANSFER_FAILED);
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
+        BigDecimal commissionRub = commission.calculate(amountRub);
+
+        BigDecimal commissionKop = commissionRub.movePointRight(2).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal totalDebitKop = amountKop.add(commissionKop);
+
+        if (!repository.hasSufficientFunds(request.cardFromNumber(), totalDebitKop)) {
+            throw new TransferException("Insufficient funds-Не достаточно денег на счете", ERROR_TRANSFER_FAILED);
         }
 
         String operationId = repository.saveOperation(request);
-        logger.logTransfer(request, operationId, "PENDING", commissionAmount.doubleValue());
-
+        logger.logTransfer(request, operationId, "PENDING", commissionRub.doubleValue());
         return operationId;
     }
 
     @Override
     public String confirmOperation(String operationId, String code) {
         if (operationId == null || operationId.isBlank()) {
-            throw new InvalidInputException("Operation ID required-ID операции обязателен", ERROR_OPERATION_NOT_FOUND);
+            throw new InvalidInputException("Operation ID required", ERROR_OPERATION_NOT_FOUND);
         }
         if (!DEFAULT_VERIFICATION_CODE.equals(code)) {
-            throw new InvalidInputException("Invalid verification code-Неверный код", ERROR_INVALID_CODE);
+            throw new InvalidInputException("Invalid verification code", ERROR_INVALID_CODE);
         }
 
         TransferRequest request = repository.getOperation(operationId);
         if (request == null) {
-            throw new InvalidInputException("Operation not found-Операцию найти невозможно", ERROR_OPERATION_NOT_FOUND);
+            throw new InvalidInputException("Operation not found", ERROR_OPERATION_NOT_FOUND);
         }
 
         String status = repository.getStatus(operationId);
         if (!"PENDING".equals(status)) {
-            throw new InvalidInputException("Operation already processed-Данная оперция уже обработана", ERROR_OPERATION_NOT_FOUND);
+            throw new InvalidInputException("Operation already processed", ERROR_OPERATION_NOT_FOUND);
         }
 
-        BigDecimal amount = BigDecimal.valueOf(request.amount().value(), 2);
-        BigDecimal commissionAmount = commission.calculate(amount);
-        BigDecimal totalDebit = amount.add(commissionAmount);
+        BigDecimal amountKop = BigDecimal.valueOf(request.amount().value());
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
+        BigDecimal commissionRub = commission.calculate(amountRub);
+        BigDecimal commissionKop = commissionRub.movePointRight(2).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal totalDebitKop = amountKop.add(commissionKop);
 
-        if (!repository.hasSufficientFunds(request.cardFromNumber(), totalDebit)) {
+        if (!repository.hasSufficientFunds(request.cardFromNumber(), totalDebitKop)) {
             repository.updateStatus(operationId, "FAILED");
-            logger.logTransfer(request, operationId, "FAILED", commissionAmount.doubleValue());
-            throw new TransferException("Insufficient funds-Не хватает средств", ERROR_TRANSFER_FAILED);
+            logger.logTransfer(request, operationId, "FAILED", commissionRub.doubleValue());
+            throw new TransferException("Insufficient funds", ERROR_TRANSFER_FAILED);
         }
 
-        try {
-            repository.withdraw(request.cardFromNumber(), totalDebit);
-            repository.deposit(request.cardToNumber(), amount);
-
-            repository.updateStatus(operationId, "SUCCESS");
-            logger.logTransfer(request, operationId, "SUCCESS", commissionAmount.doubleValue());
-
-            return operationId;
-        } catch (Exception e) {
+        boolean withdrawn = repository.withdraw(request.cardFromNumber(), totalDebitKop);
+        if (!withdrawn) {
             repository.updateStatus(operationId, "FAILED");
-            logger.logTransfer(request, operationId, "FAILED", commissionAmount.doubleValue());
-            throw new TransferException("Transfer failed-Перевод провален", ERROR_TRANSFER_FAILED);
+            logger.logTransfer(request, operationId, "FAILED", commissionRub.doubleValue());
+            throw new TransferException("Withdraw failed", ERROR_TRANSFER_FAILED);
         }
+
+        boolean deposited = repository.deposit(request.cardToNumber(), amountKop);
+        if (!deposited) {
+            repository.deposit(request.cardFromNumber(), totalDebitKop);
+            repository.updateStatus(operationId, "FAILED");
+            logger.logTransfer(request, operationId, "FAILED", commissionRub.doubleValue());
+            throw new TransferException("Receiver deposit failed", ERROR_TRANSFER_FAILED);
+        }
+
+        repository.updateStatus(operationId, "SUCCESS");
+        logger.logTransfer(request, operationId, "SUCCESS", commissionRub.doubleValue());
+        return operationId;
     }
     // В учебных целях проверяем только формат срока и CVV через аннотации в DTO, дополнительная бизнес-валидация не требуется.
     private void validate(TransferRequest request) {
@@ -105,7 +117,6 @@ public class TransferServiceImpl implements TransferService {
             throw new InvalidInputException("Unsupported currency-Валюта недопустимая", ERROR_INVALID_CURRENCY);
         }
 
-        // Конвертируем копейки в рубли проверяем лимиты.
         BigDecimal amount = BigDecimal.valueOf(request.amount().value(), 2);
         if (!commission.isValidAmount(amount)) {
             throw new InvalidInputException("Invalid amount-Сумма перевода некорректна", ERROR_INVALID_AMOUNT);

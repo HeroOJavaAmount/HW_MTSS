@@ -1,4 +1,4 @@
-package ru.netology.model;
+package ru.netology.dto;
 
 public class ErrorResponse {
     private String message;

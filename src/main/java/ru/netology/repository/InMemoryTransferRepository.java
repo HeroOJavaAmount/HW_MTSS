@@ -3,19 +3,23 @@ package ru.netology.repository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 import ru.netology.exception.InvalidInputException;
-import ru.netology.model.TransferRequest;
+import ru.netology.dto.TransferRequest;
+import ru.netology.model.cards.Card;
+import ru.netology.model.cards.DebitCard;
+import ru.netology.model.cards.MoneyUnit;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static ru.netology.config.ConstantContainer.ERROR_INVALID_CARD_DATA;
-import static ru.netology.config.ConstantContainer.ERROR_OPERATION_NOT_FOUND;
 
 @Repository
 public class InMemoryTransferRepository {
 
-    private final Map<String, BigDecimal> balances = new ConcurrentHashMap<>();
+    protected final Map<String, Card> cards = new ConcurrentHashMap<>();
 
     private final Map<String, TransferRequest> operations = new ConcurrentHashMap<>();
 
@@ -23,33 +27,45 @@ public class InMemoryTransferRepository {
 
     @PostConstruct
     private void init() {
-        // Тестовые карты
-        balances.put("1111222233334444", new BigDecimal("1000.00"));
-        balances.put("5555666677778888", new BigDecimal("50000.00"));
+        Currency rub = Currency.getInstance("RUB");
+        // Создаём тестовые карты с балансом
+        cards.put("1111222233334444", new DebitCard(
+                "1111222233334444", "Ivan Ivanov","333","12/29",
+                new BigDecimal("10000.00"), rub, MoneyUnit.RUBLES));
+        cards.put("5555666677778888", new DebitCard(
+                "5555666677778888", "Petr Petrov","555","11/28",
+                new BigDecimal("5000.00"), rub, MoneyUnit.RUBLES));
+    }
+
+    public Card getCard(String cardNumber) {
+        return cards.get(cardNumber);
     }
 
     public boolean cardExists(String cardNumber) {
-        return balances.containsKey(cardNumber);
+        return cards.containsKey(cardNumber);
     }
 
-    public BigDecimal getBalance(String cardNumber) {
-        return balances.get(cardNumber);
+    public boolean withdraw(String cardNumber, BigDecimal amount) {
+        Card card = cards.get(cardNumber);
+        if (card != null)return card.take(amount);
+        return false;
+
     }
 
-    public void withdraw(String cardNumber, BigDecimal amount) {
-        balances.computeIfPresent(cardNumber, (k, v) -> v.subtract(amount));
-    }
-
-    public void deposit(String cardNumber, BigDecimal amount) {
-        balances.compute(cardNumber, (k, v) -> (v == null) ? amount : v.add(amount));
+    public boolean deposit(String cardNumber, BigDecimal amount) {
+        Card card = cards.get(cardNumber);
+        if (card != null){ card.add(amount);
+            return true;
+        }
+        return false;
     }
 
     public boolean hasSufficientFunds(String cardNumber, BigDecimal required) {
-        BigDecimal balance = balances.get(cardNumber);
-        if (balance == null) {
+        Card card = cards.get(cardNumber);
+        if (card == null) {
             throw new InvalidInputException("Карта не найдена: " + maskCard(cardNumber), ERROR_INVALID_CARD_DATA);
         }
-        return balance.compareTo(required) >= 0;
+        return card.isBalanceBigger(required);
     }
 
     public String saveOperation(TransferRequest request) {
@@ -70,13 +86,8 @@ public class InMemoryTransferRepository {
     public void updateStatus(String operationId, String status) {
         statuses.put(operationId, status);
     }
-
-    public boolean operationExists(String operationId) {
-        return operations.containsKey(operationId);
-    }
-
     private String generateId() {
-        return "op_" + System.currentTimeMillis() + "_" + (int) (Math.random() * 10000);
+        return UUID.randomUUID().toString();
     }
 
     private String maskCard(String cardNumber) {

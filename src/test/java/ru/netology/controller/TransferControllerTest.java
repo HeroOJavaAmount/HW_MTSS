@@ -2,9 +2,9 @@ package ru.netology.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
-import ru.netology.model.ConfirmRequest;
-import ru.netology.model.SuccessResponse;
-import ru.netology.model.TransferRequest;
+import ru.netology.dto.ConfirmRequest;
+import ru.netology.dto.SuccessResponse;
+import ru.netology.dto.TransferRequest;
 import ru.netology.service.TransferService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,10 +20,9 @@ class TransferControllerTest {
         when(transferService.initiateTransfer(any()))
                 .thenReturn("test-operation-id");
 
-        // 10000 копеек = 100.00 рублей
         TransferRequest request = new TransferRequest(
                 "1111222233334444",
-                "12/25",
+                "12/27",
                 "123",
                 "5555666677778888",
                 new TransferRequest.Amount(10000, "RUB")

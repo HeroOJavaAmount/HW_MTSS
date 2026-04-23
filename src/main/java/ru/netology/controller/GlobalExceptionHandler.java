@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.netology.exception.InvalidInputException;
 import ru.netology.exception.TransferException;
-import ru.netology.model.ErrorResponse;
+import ru.netology.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

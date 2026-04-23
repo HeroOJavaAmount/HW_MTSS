@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.netology.model.TransferRequest;
+import ru.netology.dto.TransferRequest;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

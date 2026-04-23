@@ -1,4 +1,4 @@
-package ru.netology.model;
+package ru.netology.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;

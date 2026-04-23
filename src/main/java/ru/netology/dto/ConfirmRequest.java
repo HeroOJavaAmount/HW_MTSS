@@ -1,4 +1,4 @@
-package ru.netology.model;
+package ru.netology.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

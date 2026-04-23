@@ -10,13 +10,12 @@ class MixedCommissionTest {
 
     @Test
     void calculate_ShouldReturnOnePercent() {
-        BigDecimal result = commission.calculate(new BigDecimal("1000.00"));
-        assertEquals(new BigDecimal("10.00"), result);
+        assertEquals(new BigDecimal("10.00"), commission.calculate(new BigDecimal("1000.00")));
+        assertEquals(new BigDecimal("0.00"), commission.calculate(new BigDecimal("0.00")));
     }
 
     @Test
     void isValidAmount_ShouldRespectLimits() {
-        // Лимиты сейчас 100 и 1_000_000_00 (копеек) = 1.00 и 1_000_000.00 рублей
         assertTrue(commission.isValidAmount(new BigDecimal("1.00")));
         assertTrue(commission.isValidAmount(new BigDecimal("1000000.00")));
         assertFalse(commission.isValidAmount(new BigDecimal("0.99")));

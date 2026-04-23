@@ -3,9 +3,9 @@ package ru.netology.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.netology.model.ConfirmRequest;
-import ru.netology.model.SuccessResponse;
-import ru.netology.model.TransferRequest;
+import ru.netology.dto.ConfirmRequest;
+import ru.netology.dto.SuccessResponse;
+import ru.netology.dto.TransferRequest;
 import ru.netology.service.TransferService;
 
 @RestController

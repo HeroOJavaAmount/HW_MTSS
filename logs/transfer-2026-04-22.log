@@ -1,0 +1,2 @@
+{"@timestamp":"2026-04-22T18:57:30.123342Z","@version":"1","message":"HikariPool-1 - Shutdown initiated...","logger_name":"com.zaxxer.hikari.HikariDataSource","thread_name":"SpringApplicationShutdownHook","level":"INFO","level_value":20000}
+{"@timestamp":"2026-04-22T18:57:32.8455035Z","@version":"1","message":"HikariPool-1 - Shutdown completed.","logger_name":"com.zaxxer.hikari.HikariDataSource","thread_name":"SpringApplicationShutdownHook","level":"INFO","level_value":20000}

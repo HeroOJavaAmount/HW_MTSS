@@ -1,4 +1,4 @@
-package ru.netology.model;
+package ru.netology.dto;
 
 public class SuccessResponse {
     private String operationId;

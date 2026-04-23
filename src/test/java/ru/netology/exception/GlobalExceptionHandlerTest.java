@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.netology.controller.GlobalExceptionHandler;
-import ru.netology.exception.InvalidInputException;
-import ru.netology.exception.TransferException;
-import ru.netology.model.ErrorResponse;
+import ru.netology.dto.ErrorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,13 +54,10 @@ class GlobalExceptionHandlerTest {
         assertEquals(5000, response.getBody().getId());
     }
 
-    // Для MethodArgumentNotValidException нужна более сложная настройка,
-    // можно протестировать что обработчик вообще существует
     @Test
     void testHandlerMethodsExist() {
         assertDoesNotThrow(() -> {
             GlobalExceptionHandler handler = new GlobalExceptionHandler();
-            // Проверяем что методы существуют
             handler.handleInvalidInput(new InvalidInputException("test", 4000));
             handler.handleTransferException(new TransferException("test", 5000));
             handler.handleGenericException(new Exception("test"));

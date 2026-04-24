@@ -1,12 +1,23 @@
-FROM maven:3.9-eclipse-temurin-17 AS builder
-WORKDIR /app
+# Stage 1 – build application
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /workspace/app
 COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY src ./src
-RUN mvn package -DskipTests
+RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 5500
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Stage 2 – extract layers
+FROM eclipse-temurin:17-jre AS extract
+WORKDIR /workspace/app
+COPY --from=build /workspace/app/target/*.jar app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+# Stage 3 – final image
+FROM eclipse-temurin:17-jre
+WORKDIR /workspace/app
+COPY --from=extract /workspace/app/dependencies/ ./
+COPY --from=extract /workspace/app/spring-boot-loader/ ./
+COPY --from=extract /workspace/app/snapshot-dependencies/ ./
+COPY --from=extract /workspace/app/application/ ./
+EXPOSE 8080
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

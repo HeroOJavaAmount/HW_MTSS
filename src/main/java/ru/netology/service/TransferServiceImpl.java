@@ -115,7 +115,7 @@ public class TransferServiceImpl implements TransferService {
             throw new InvalidInputException("Unsupported currency-Валюта недопустимая", ERROR_INVALID_CURRENCY);
         }
 
-        BigDecimal amount = BigDecimal.valueOf(request.amount().value()); // Было (..., 2) – исправлено
+        BigDecimal amount = BigDecimal.valueOf(request.amount().value()); 
         if (!commission.isValidAmount(amount)) {
             throw new InvalidInputException("Invalid amount-Сумма перевода некорректна", ERROR_INVALID_AMOUNT);
         }

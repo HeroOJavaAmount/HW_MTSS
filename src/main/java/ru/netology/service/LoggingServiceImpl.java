@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.netology.dto.TransferRequest;
-
+import java.math.BigDecimal;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -51,6 +51,7 @@ public class LoggingServiceImpl implements LoggingService {
 
     private String buildLogEntry(TransferRequest request, String operationId,
                                  String status, double commission) {
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
         return String.format(
                 "%s | From: %s | To: %s | Amount: %d %s | Commission: %.2f | Status: %s | OperationID: %s",
                 LocalDateTime.now().format(DATE_FORMAT),

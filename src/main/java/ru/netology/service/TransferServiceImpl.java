@@ -39,7 +39,7 @@ public class TransferServiceImpl implements TransferService {
         }
         
         BigDecimal amountKop = BigDecimal.valueOf(request.amount().value());
-        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value());
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
 
         BigDecimal commissionRub = commission.calculate(amountRub);
         BigDecimal commissionKop = commissionRub.movePointRight(2).setScale(0, RoundingMode.HALF_UP);
@@ -74,7 +74,8 @@ public class TransferServiceImpl implements TransferService {
         }
 
         BigDecimal amountKop = BigDecimal.valueOf(request.amount().value());
-        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value());
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
+
         BigDecimal commissionRub = commission.calculate(amountRub);
         BigDecimal commissionKop = commissionRub.movePointRight(2).setScale(0, RoundingMode.HALF_UP);
         BigDecimal totalDebitKop = amountKop.add(commissionKop);
@@ -114,8 +115,8 @@ public class TransferServiceImpl implements TransferService {
         if (currency == null || !("RUB".equalsIgnoreCase(currency) || "RUR".equalsIgnoreCase(currency))) {
             throw new InvalidInputException("Unsupported currency-Валюта недопустимая", ERROR_INVALID_CURRENCY);
         }
-
-        BigDecimal amount = BigDecimal.valueOf(request.amount().value()); 
+        
+        BigDecimal amount = BigDecimal.valueOf(request.amount().value(), 2);
         if (!commission.isValidAmount(amount)) {
             throw new InvalidInputException("Invalid amount-Сумма перевода некорректна", ERROR_INVALID_AMOUNT);
         }

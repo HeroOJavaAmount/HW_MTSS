@@ -37,13 +37,11 @@ public class TransferServiceImpl implements TransferService {
         if (!repository.cardExists(request.cardToNumber())) {
             throw new InvalidInputException("Receiver card not found-Карта получателя нe найдена", ERROR_INVALID_CARD_DATA);
         }
-
-        // Сумма в копейках: amountKop в рублях amountRub
+        
         BigDecimal amountKop = BigDecimal.valueOf(request.amount().value());
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value());
 
-        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
         BigDecimal commissionRub = commission.calculate(amountRub);
-
         BigDecimal commissionKop = commissionRub.movePointRight(2).setScale(0, RoundingMode.HALF_UP);
         BigDecimal totalDebitKop = amountKop.add(commissionKop);
 
@@ -76,7 +74,7 @@ public class TransferServiceImpl implements TransferService {
         }
 
         BigDecimal amountKop = BigDecimal.valueOf(request.amount().value());
-        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value(), 2);
+        BigDecimal amountRub = BigDecimal.valueOf(request.amount().value());
         BigDecimal commissionRub = commission.calculate(amountRub);
         BigDecimal commissionKop = commissionRub.movePointRight(2).setScale(0, RoundingMode.HALF_UP);
         BigDecimal totalDebitKop = amountKop.add(commissionKop);
@@ -106,7 +104,7 @@ public class TransferServiceImpl implements TransferService {
         logger.logTransfer(request, operationId, "SUCCESS", commissionRub.doubleValue());
         return operationId;
     }
-    // В учебных целях проверяем только формат срока и CVV через аннотации в DTO, дополнительная бизнес-валидация не требуется.
+
     private void validate(TransferRequest request) {
         if (request.cardFromNumber().equals(request.cardToNumber())) {
             throw new InvalidInputException("Same card transfer not allowed-Одинаковые карты запрешены", ERROR_SAME_CARD);
@@ -117,7 +115,7 @@ public class TransferServiceImpl implements TransferService {
             throw new InvalidInputException("Unsupported currency-Валюта недопустимая", ERROR_INVALID_CURRENCY);
         }
 
-        BigDecimal amount = BigDecimal.valueOf(request.amount().value(), 2);
+        BigDecimal amount = BigDecimal.valueOf(request.amount().value()); // Было (..., 2) – исправлено
         if (!commission.isValidAmount(amount)) {
             throw new InvalidInputException("Invalid amount-Сумма перевода некорректна", ERROR_INVALID_AMOUNT);
         }
